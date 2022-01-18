@@ -26,3 +26,4 @@ Read the glfw manpages for installation guide and you'll be fine
 - make portable
 - use pre-built binaries ?
 -- switching between os'es, different build types (release/debug) is shitty without the source code?
+- remove the glfw copypaste fork
