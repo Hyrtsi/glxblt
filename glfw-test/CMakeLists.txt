@@ -1,7 +1,10 @@
 #https://www.glfw.org/docs/3.3/build_guide.html
 
 cmake_minimum_required(VERSION 3.11)
-project(glfw-test)
+project(glfw-test VERSION 0.1)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(OpenGL REQUIRED)
 
