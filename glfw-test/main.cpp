@@ -7,6 +7,7 @@
 // https://www.glfw.org/docs/3.3/quick.html
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
@@ -14,12 +15,19 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void processInput(GLFWwindow *window)
 {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
         glfwSetWindowShouldClose(window, true);
+    }
 }
+
+constexpr int window_width{800};
+constexpr int window_height{600};
 
 int main()
 {
+    printf("Starting the program\n");
+
     if (!glfwInit())
     {
         return -1;
@@ -35,7 +43,7 @@ int main()
     // without backwards-compatible features we no longer need
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "openGL is fun", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(window_width, window_height, "openGL is fun", NULL, NULL);
     if (window == nullptr)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -56,7 +64,7 @@ int main()
     // -----------------------------------
 
     // Set the viewport
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, window_width, window_height);
 
     // Adjust the viewport if user resizes the window
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -118,8 +126,6 @@ int main()
         std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-
-
     // Delete the unnecessary shaders as they are now linked to the shader program
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);  
@@ -157,9 +163,6 @@ int main()
     // uncomment this call to draw in wireframe polygons.
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-
-
-
     // Activate the shader program
     glUseProgram(shaderProgram);
 
@@ -190,41 +193,3 @@ int main()
     glfwTerminate();
     return 0;
 }
-
-/*
-int main(void)
-{
-    GLFWwindow* window;
-
-    // Initialize the library
-    if (!glfwInit())
-        return -1;
-
-    // Create a windowed mode window and its OpenGL context
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
-
-    // Make the window's context current
-    glfwMakeContextCurrent(window);
-
-    // Loop until the user closes the window
-    while (!glfwWindowShouldClose(window))
-    {
-        // Render here
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        // Swap front and back buffers
-        glfwSwapBuffers(window);
-
-        // Poll for and process events
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
-    return 0;
-}
-*/
