@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
+#include <string>
 
 // OK boi start banging https://learnopengl.com/
 // https://www.glfw.org/docs/3.3/quick.html
@@ -19,6 +21,28 @@ void processInput(GLFWwindow *window)
     {
         glfwSetWindowShouldClose(window, true);
     }
+}
+
+const std::string readFile(const char *filePath)
+{
+    std::string content;
+    std::ifstream fileStream(filePath, std::ios::in);
+
+    if (!fileStream.is_open())
+    {
+        std::cerr << "Could not read file " << filePath << ". File does not exist." << std::endl;
+        printf("asoethusnthou");
+        return "";
+    }
+
+    std::string line = "";
+    while (!fileStream.eof())
+    {
+        std::getline(fileStream, line);
+        content.append(line + "\n");
+    }
+    fileStream.close();
+    return content;
 }
 
 constexpr int window_width{800};
@@ -73,12 +97,8 @@ int main()
 
 
     // Create a vertex shader and compile it
-    const char *vertexShaderSource = "#version 330 core\n"
-        "layout (location = 0) in vec3 aPos;\n"
-        "void main()\n"
-        "{\n"
-        "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-        "}\0";
+    std::string vShaderStr = readFile("vert.glsl");
+    const char* vertexShaderSource = vShaderStr.c_str();
 
     uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -96,11 +116,8 @@ int main()
     }
 
     // Create a fragment shader and compile it
-    const char* fragmentShaderSource = "#version 330 core\n"
-        "out vec4 FragColor;\n"
-        "void main()\n"
-        "{FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);}\0";
-    
+    std::string fShaderStr = readFile("frag.glsl");
+    const char* fragmentShaderSource = fShaderStr.c_str();
     uint32_t fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
