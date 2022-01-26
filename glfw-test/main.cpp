@@ -113,6 +113,7 @@ int main()
     {
         glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        return 1;
     }
 
     // Create a fragment shader and compile it
@@ -127,6 +128,7 @@ int main()
     {
         glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+        return 1;
     }
 
     // Create a shader program
@@ -141,6 +143,7 @@ int main()
     {
         glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << infoLog << std::endl;
+        return 1;
     }
 
     // Delete the unnecessary shaders as they are now linked to the shader program
