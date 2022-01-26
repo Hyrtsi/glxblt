@@ -195,7 +195,7 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
 
     // uncomment this call to draw in wireframe polygons.
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Activate the shader program
     glUseProgram(shaderProgram);
