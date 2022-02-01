@@ -29,15 +29,32 @@ public:
             // open files
             vShaderFile.open(vertexPath);
             fShaderFile.open(fragmentPath);
+
+            if (!vShaderFile.is_open())
+            {
+                printf("Could not open vertex shader. Path: %s\n",
+                    vertexPath);
+                return;
+            }
+
+            if (!fShaderFile.is_open())
+            {
+                printf("Could not open fragment shader. Path: %s\n",
+                    fragmentPath);
+                return;
+            }
+
             std::stringstream vShaderStream{};
             std::stringstream fShaderStream{};
 
             // read file's buffer contents into streams
             vShaderStream << vShaderFile.rdbuf();
             fShaderStream << fShaderFile.rdbuf();
+
             // close file handlers
             vShaderFile.close();
             fShaderFile.close();
+            
             // convert stream into string
             vertexCode   = vShaderStream.str();
             fragmentCode = fShaderStream.str();

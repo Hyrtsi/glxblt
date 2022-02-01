@@ -26,28 +26,6 @@ void processInput(GLFWwindow *window)
     }
 }
 
-const std::string readFile(const char *filePath)
-{
-    std::string content;
-    std::ifstream fileStream(filePath, std::ios::in);
-
-    if (!fileStream.is_open())
-    {
-        std::cerr << "Could not read file " << filePath << ". File does not exist." << std::endl;
-        printf("asoethusnthou");
-        return "";
-    }
-
-    std::string line = "";
-    while (!fileStream.eof())
-    {
-        std::getline(fileStream, line);
-        content.append(line + "\n");
-    }
-    fileStream.close();
-    return content;
-}
-
 constexpr int window_width{800};
 constexpr int window_height{600};
 
@@ -95,64 +73,7 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // Build and compile the shader program
-    Shader shader("vert.glsl", "frag.glsl");
-    /*
-    // Create a vertex shader and compile it
-    std::string vShaderStr = readFile("vert.glsl");
-    const char* vertexShaderSource = vShaderStr.c_str();
-
-    uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-
-    int  success{0};
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-    if (success == 0)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-        return 1;
-    }
-
-    // Create a fragment shader and compile it
-    std::string fShaderStr = readFile("frag.glsl");
-    const char* fragmentShaderSource = fShaderStr.c_str();
-    uint32_t fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (success == 0)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-        return 1;
-    }
-
-    // Create a shader program
-    // final linked version of multiple shaders combined
-    uint32_t shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (success == 0)
-    {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << infoLog << std::endl;
-        return 1;
-    }
-
-    // Delete the unnecessary shaders as they are now linked to the shader program
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);  
-    */
-
-    
+    Shader shader("vert.glsl", "frag.glsl");  
 
     float vertices[] =
     {
