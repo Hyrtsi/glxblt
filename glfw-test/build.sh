@@ -1,4 +1,4 @@
 #!/bin/sh
-cmake -S . -B build -G Ninja
-cmake --build build
-./build/app
+cmake -S . -B build -G Ninja && \
+    cmake --build build && \
+    ./build/app
