@@ -6,6 +6,8 @@
 #include <string>
 #include <cmath>
 
+#include "shader.hpp"
+
 // OK boi start banging https://learnopengl.com/
 // https://www.glfw.org/docs/3.3/quick.html
 
@@ -79,14 +81,12 @@ int main()
     glfwMakeContextCurrent(window);
 
     // Initialize GLAD before calling any openGL function
-
+    // Load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
-    // -----------------------------------
 
     // Set the viewport
     glViewport(0, 0, window_width, window_height);
@@ -94,9 +94,9 @@ int main()
     // Adjust the viewport if user resizes the window
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // -------------------- compile shaders ---
-
-
+    // Build and compile the shader program
+    Shader shader("vert.glsl", "frag.glsl");
+    /*
     // Create a vertex shader and compile it
     std::string vShaderStr = readFile("vert.glsl");
     const char* vertexShaderSource = vShaderStr.c_str();
@@ -150,8 +150,8 @@ int main()
     // Delete the unnecessary shaders as they are now linked to the shader program
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);  
+    */
 
-    // ------------- compiled shaders
     
 
     float vertices[] =
@@ -201,8 +201,8 @@ int main()
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Activate the shader program
-    glUseProgram(shaderProgram);
-
+    //glUseProgram(shaderProgram);
+    shader.use();
     // Render loop
     while(!glfwWindowShouldClose(window))
     {
@@ -231,7 +231,8 @@ int main()
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     // glDeleteBuffers(1, &EBO);
-    glDeleteProgram(shaderProgram);
+    //glDeleteProgram(shaderProgram);
+    shader.destroy();
 
     printf("Successfully exited the program!\n");
     
