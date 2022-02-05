@@ -86,19 +86,23 @@ int main()
 
     float vertices[] =
     {
-        // positions                // colors           // texture coords
-        0.5f, -0.5f, 0.0, 1.0f,    1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-        -0.5f, -0.5f, 0.0, 1.0f,   0.0f, 1.0f, 0.0f,   1.0, 0.0f,
-        0.0f,  0.5f, 0.0, 1.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+        // positions                    // colors           // texture coords
+        -1.0f,  -1.0f,  -1.0f, 1.0f,    0.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+        1.0f,   -1.0f,  -1.0f, 1.0f,    1.0f, 0.0f, 0.0f,   1.0, 0.0f,
+        -1.0f,  1.0f,   -1.0f, 1.0f,    0.0f, 1.0f, 0.0f,   0.0f, 0.0f,
+        1.0f,   1.0f,   -1.0f, 1.0f,    1.0f, 1.0f, 0.0f,   0.0f, 0.0f,
+
+        -1.0f,  -1.0f,  1.0f, 1.0f,     0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+        1.0f,   -1.0f,  1.0f, 1.0f,     1.0f, 0.0f, 1.0f,   1.0, 0.0f,
+        -1.0f,  1.0f,   1.0f, 1.0f,     0.0f, 1.0f, 1.0f,   0.0f, 0.0f,
+        1.0f,   1.0f,   1.0f, 1.0f,     1.0f, 1.0f, 1.0f,   0.0f, 0.0f
     };
+
 
     constexpr auto fovRad = M_PI * 0.5;
     constexpr auto near = 0.1;
     constexpr auto far = 10.0;
     const Mat4d perspective = perspectiveMatrix(fovRad, near, far);
-    
-    
-
     
     unsigned int texture;
     glGenTextures(1, &texture);
@@ -120,19 +124,29 @@ int main()
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(imageData);
 
-    // unsigned int indices[] =
-    // {
-    //     0, 1, 3,   // first triangle
-    //     1, 2, 3    // second triangle
-    // };
+    unsigned int indices[] =
+    {
+        4, 7, 6, // front
+        4, 5, 7, // front
+        0, 6, 2, // left
+        0, 4, 6, // left
+        1, 3, 7, // right
+        1, 7, 5, // right
+        0, 2, 3, // back 
+        0, 3, 1, // back
+        0, 1, 5, // bottom
+        0, 5, 4, // bottom
+        2, 7, 3, // top
+        2, 6, 7 // top
+    };
 
     // Reserve the buffer in GPU memory
     uint32_t VBO{0};
     uint32_t VAO{0};
-    // uint32_t EBO{0};
+    uint32_t EBO{0};
     glGenBuffers(1, &VBO);
     glGenVertexArrays(1, &VAO);
-    // glGenBuffers(1, &EBO);
+    glGenBuffers(1, &EBO);
 
     glBindVertexArray(VAO);
     
@@ -142,15 +156,15 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // Copy our index array in a element buffer for OpenGL to use
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Tell OpenGL how to interpret vertex buffer data
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);   // pos
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(4 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(4 * sizeof(float))); // color
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(7 * sizeof(float)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(7 * sizeof(float))); // tex
     glEnableVertexAttribArray(2);  
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO
@@ -172,7 +186,8 @@ int main()
         processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glEnable(GL_DEPTH_TEST);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         
         float timeValue = glfwGetTime();
@@ -184,18 +199,18 @@ int main()
         // std::cout << camera << std::endl << std::endl;
 
 
-        const Vec3d from{0.0, 1.0, 2.0};
+        const Vec3d from{2.0, 1.0, 4.0};
         const Vec3d to{0.0, 0.0, 0.0};
         const Vec3d up{0.0, 1.0, 0.0};
         
         const Mat4d camera = cameraMatrix(from, to, up);
         shader.setMat4f("camera", camera.cast<float>());
 
-        const Mat4d model = transformationMatrix(Vec3d(0.0, 0.0, 0.0), Vec3d(0.0, 0.0, 0.0));
+        const Mat4d model = transformationMatrix(Vec3d(0.0, 0.0, 0.0), Vec3d(sin(t), 1.0 - sin(t), cos(t)));
         shader.setMat4f("model", model.cast<float>());
 
-        glDrawArrays(GL_TRIANGLES, 0, 3); // use this when not rendering from index buffer
-        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // use this when rendering from index buffer
+        // glDrawArrays(GL_TRIANGLES, 0, 36); // use this when not rendering from index buffer
+        glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(unsigned int), GL_UNSIGNED_INT, 0); // use this when rendering from index buffer
 
         glfwSwapBuffers(window);
         glfwPollEvents();

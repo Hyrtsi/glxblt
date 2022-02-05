@@ -15,5 +15,5 @@ void main()
 {
     gl_Position = perspective * camera * model * aPos;
     dynamicColor = aColor;
-    TexCoord = aTexCoord;
+    //TexCoord = aTexCoord;
 }
