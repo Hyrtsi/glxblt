@@ -84,23 +84,31 @@ int main()
 
     float vertices[] =
     {
-        // positions        // colors
-        0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f 
+        // positions        // colors           // texture coords
+        0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,   1.0, 0.0f,
+        0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
     };
 
-
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    // set the texture wrapping/filtering options (on the currently bound texture object)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     int width, height, nrChannels;
-    unsigned char *data = stbi_load(RES_PATH("container.jpg"), &width, &height, &nrChannels, 0); 
-    if (data == nullptr)
+    unsigned char *imageData = stbi_load(RES_PATH("container.jpg"), &width, &height, &nrChannels, 0); 
+    if (imageData == nullptr)
     {
         printf("Image load failed\n");
         return 4;
     }
-
-
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    stbi_image_free(imageData);
 
     // unsigned int indices[] =
     // {
@@ -128,10 +136,12 @@ int main()
     // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Tell OpenGL how to interpret vertex buffer data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);  
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO
     // as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
@@ -152,15 +162,15 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         
-        // float timeValue = glfwGetTime();
-        // float greenValue = sin(timeValue);
-        // int vertexColorLocation = glGetUniformLocation(shaderProgram, "dynamicColor");
+        float timeValue = glfwGetTime();
+        float greenValue = 0.5f+0.5f*sin(timeValue*2.0f);
+        // int vertexColorLocation{shader.getUniformLocation("dynamicColor")};
         // glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
-        
+        shader.setFloat("pylly", greenValue);
 
 
         glDrawArrays(GL_TRIANGLES, 0, 3); // use this when not rendering from index buffer
-        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // use this when rendering from index buffer
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // use this when rendering from index buffer
 
         glfwSwapBuffers(window);
         glfwPollEvents();    
