@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 find_package(OpenGL REQUIRED)
 find_package(Eigen3 REQUIRED)
 
-set(SOURCES main.cpp ext/glad/glad.c)
+set(SOURCES main.cpp matutils.cpp ext/glad/glad.c)
 add_executable(app ${SOURCES})
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)

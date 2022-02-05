@@ -6,8 +6,9 @@
 #include <fstream>
 #include <string>
 #include <cmath>
-
+#include "matutils.hpp"
 #include "shader.hpp"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -90,6 +91,11 @@ int main()
         -0.5f, -0.5f, 0.0f, 1.0f,   0.0f, 1.0f, 0.0f,   1.0, 0.0f,
         0.0f,  0.5f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
     };
+
+    constexpr auto fovRad = 4.0;
+    constexpr auto near = 0.1;
+    constexpr auto far = 10.0;
+    const auto perspective = perspectiveMatrix(fovRad, near, far);
 
     unsigned int texture;
     glGenTextures(1, &texture);
