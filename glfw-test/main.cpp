@@ -87,15 +87,15 @@ int main()
     float vertices[] =
     {
         // positions                // colors           // texture coords
-        0.5f, -0.5f, 0.0f, 1.0f,    1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-        -0.5f, -0.5f, 0.0f, 1.0f,   0.0f, 1.0f, 0.0f,   1.0, 0.0f,
-        0.0f,  0.5f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+        0.5f, -0.5f, -1.0f, 1.0f,    1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+        -0.5f, -0.5f, -1.0f, 1.0f,   0.0f, 1.0f, 0.0f,   1.0, 0.0f,
+        0.0f,  0.5f, -1.0f, 1.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
     };
 
-    constexpr auto fovRad = 4.0;
+    constexpr auto fovRad = M_PI * 0.5;
     constexpr auto near = 0.1;
     constexpr auto far = 10.0;
-    const auto perspective = perspectiveMatrix(fovRad, near, far);
+    const Mat4d perspective = perspectiveMatrix(fovRad, near, far);
 
     unsigned int texture;
     glGenTextures(1, &texture);
@@ -173,6 +173,7 @@ int main()
         float greenValue = 0.5f+0.5f*sin(timeValue*2.0f);
         shader.setFloat("pylly", greenValue);
 
+        shader.setMat4f("perspective", perspective.cast<float>());
 
         glDrawArrays(GL_TRIANGLES, 0, 3); // use this when not rendering from index buffer
         //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // use this when rendering from index buffer
