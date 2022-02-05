@@ -84,7 +84,6 @@ int main()
     // TODO: move shaders to res
     Shader shader("vert.glsl", "frag.glsl");  
 
-    constexpr float fubar = 1.0f;
     float vertices[] =
     {
         // positions                // colors           // texture coords
@@ -99,11 +98,7 @@ int main()
     const Mat4d perspective = perspectiveMatrix(fovRad, near, far);
     
     
-    const Vec3d from{0.0, 1.0, fubar};
-    const Vec3d to{0.0, 0.0, 0.0};
-    const Vec3d up{0.0, 1.0, 0.0};
-    
-    const Mat4d camera = cameraMatrix(from, to, up);
+
     
     unsigned int texture;
     glGenTextures(1, &texture);
@@ -168,6 +163,9 @@ int main()
     // Activate the shader program
     //glUseProgram(shaderProgram);
     shader.use();
+
+    double t{0.0};
+    constexpr auto fps{60.0};
     // Render loop
     while(!glfwWindowShouldClose(window))
     {
@@ -185,13 +183,21 @@ int main()
 
         // std::cout << camera << std::endl << std::endl;
 
+
+        const Vec3d from{sin(t), 1.0 + 0.5 * sin(t), cos(t)};
+        const Vec3d to{0.0, 0.0, 0.0};
+        const Vec3d up{0.0, 1.0, 0.0};
+        
+        const Mat4d camera = cameraMatrix(from, to, up);
         shader.setMat4f("camera", camera.cast<float>());
 
         glDrawArrays(GL_TRIANGLES, 0, 3); // use this when not rendering from index buffer
         //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // use this when rendering from index buffer
 
         glfwSwapBuffers(window);
-        glfwPollEvents();    
+        glfwPollEvents();
+
+        t += 1.0 / fps;
     }
 
     // optional: de-allocate all resources once they've outlived their purpose:
