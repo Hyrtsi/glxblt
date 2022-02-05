@@ -16,7 +16,8 @@
 - glfw https://github.com/glfw/glfw
 - cmake
 - openGL 3.3 
-
+- libeigen3-dev
+- 
 Tested only on Ubuntu 20.04, so you may have to do some additional work on Windows or Mac
 
 Read the glfw manpages for installation guide and you'll be fine
