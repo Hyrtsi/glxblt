@@ -84,13 +84,13 @@ int main()
     // TODO: move shaders to res
     Shader shader("vert.glsl", "frag.glsl");  
 
-    constexpr float fubar = -0.15f;
+    constexpr float fubar = 5.5f;
     float vertices[] =
     {
         // positions                // colors           // texture coords
-        0.5f, -0.5f, fubar, 1.0f,    1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-        -0.5f, -0.5f, fubar, 1.0f,   0.0f, 1.0f, 0.0f,   1.0, 0.0f,
-        0.0f,  0.5f, fubar, 1.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+        0.5f, -0.5f, 0.0, 1.0f,    1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+        -0.5f, -0.5f, 0.0, 1.0f,   0.0f, 1.0f, 0.0f,   1.0, 0.0f,
+        0.0f,  0.5f, 0.0, 1.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
     };
 
     constexpr auto fovRad = M_PI * 0.5;
@@ -99,7 +99,7 @@ int main()
     const Mat4d perspective = perspectiveMatrix(fovRad, near, far);
     
     
-    const Vec3d from{0.0, 0.0, 1.3};
+    const Vec3d from{0.0, 0.0, fubar};
     const Vec3d to{0.0, 0.0, 0.0};
     const Vec3d up{0.0, 1.0, 0.0};
     
@@ -183,7 +183,7 @@ int main()
 
         shader.setMat4f("perspective", perspective.cast<float>());
 
-        std::cout << camera << std::endl << std::endl;
+        // std::cout << camera << std::endl << std::endl;
 
         shader.setMat4f("camera", camera.cast<float>());
 

@@ -136,13 +136,13 @@ public:
         const GLenum err = glGetError();
         if (GL_NO_ERROR != err)
         {
-            printf("setMat4f failed\n");
+            printf("setMat4f failed, %d\n", location);
             return;
         }
         
         glUniformMatrix4fv(
                 location,
-                static_cast<GLsizei>(1), GL_TRUE, value.data());
+                static_cast<GLsizei>(1), GL_FALSE, value.data());
 
     }
 

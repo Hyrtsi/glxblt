@@ -12,7 +12,7 @@ uniform mat4 camera;
 
 void main()
 {
-    gl_Position = perspective * aPos;
+    gl_Position = perspective * camera * aPos;
     dynamicColor = aColor;
     TexCoord = aTexCoord;
 }

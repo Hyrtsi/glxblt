@@ -12,7 +12,7 @@ Mat4d perspectiveMatrix(double fovRad, double near, double far)
         0.0, 0.0, foo, -1.0,
         0.0, 0.0, bar, 0.0;
     
-    return p;
+    return p.transpose();
 }
 
 Mat4d perspectiveMatrix2(double fovRad, double near, double far)
