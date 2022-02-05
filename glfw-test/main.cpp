@@ -85,10 +85,10 @@ int main()
 
     float vertices[] =
     {
-        // positions        // colors           // texture coords
-        0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,   1.0, 0.0f,
-        0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+        // positions                // colors           // texture coords
+        0.5f, -0.5f, 0.0f, 1.0f,    1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+        -0.5f, -0.5f, 0.0f, 1.0f,   0.0f, 1.0f, 0.0f,   1.0, 0.0f,
+        0.0f,  0.5f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
     };
 
     unsigned int texture;
@@ -137,11 +137,11 @@ int main()
     // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Tell OpenGL how to interpret vertex buffer data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(4 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(7 * sizeof(float)));
     glEnableVertexAttribArray(2);  
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO
