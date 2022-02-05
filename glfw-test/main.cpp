@@ -7,6 +7,11 @@
 #include <cmath>
 
 #include "shader.hpp"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+
+#define RES_PATH(FILE) (std::string(RES_DIR)+std::string("/")+std::string(FILE)).c_str()
 
 // OK boi start banging https://learnopengl.com/
 // https://www.glfw.org/docs/3.3/quick.html
@@ -73,6 +78,8 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // Build and compile the shader program
+    // TODO: use RES_PATH macro
+    // TODO: move shaders to res
     Shader shader("vert.glsl", "frag.glsl");  
 
     float vertices[] =
@@ -82,6 +89,18 @@ int main()
         -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f 
     };
+
+
+
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load(RES_PATH("container.jpg"), &width, &height, &nrChannels, 0); 
+    if (data == nullptr)
+    {
+        printf("Image load failed\n");
+        return 4;
+    }
+
+
 
     // unsigned int indices[] =
     // {

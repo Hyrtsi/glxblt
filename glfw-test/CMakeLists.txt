@@ -20,3 +20,5 @@ target_link_libraries(app glfw)
 target_link_libraries(app OpenGL::GL)
 
 target_include_directories(app PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/ext)
+
+target_compile_definitions(app PRIVATE RES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/res")
