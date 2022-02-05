@@ -84,7 +84,7 @@ int main()
     // TODO: move shaders to res
     Shader shader("vert.glsl", "frag.glsl");  
 
-    constexpr float fubar = 5.5f;
+    constexpr float fubar = 1.0f;
     float vertices[] =
     {
         // positions                // colors           // texture coords
@@ -99,7 +99,7 @@ int main()
     const Mat4d perspective = perspectiveMatrix(fovRad, near, far);
     
     
-    const Vec3d from{0.0, 0.0, fubar};
+    const Vec3d from{0.0, 1.0, fubar};
     const Vec3d to{0.0, 0.0, 0.0};
     const Vec3d up{0.0, 1.0, 0.0};
     
