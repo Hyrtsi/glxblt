@@ -84,19 +84,27 @@ int main()
     // TODO: move shaders to res
     Shader shader("vert.glsl", "frag.glsl");  
 
+    constexpr float fubar = -0.15f;
     float vertices[] =
     {
         // positions                // colors           // texture coords
-        0.5f, -0.5f, -1.0f, 1.0f,    1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-        -0.5f, -0.5f, -1.0f, 1.0f,   0.0f, 1.0f, 0.0f,   1.0, 0.0f,
-        0.0f,  0.5f, -1.0f, 1.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+        0.5f, -0.5f, fubar, 1.0f,    1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+        -0.5f, -0.5f, fubar, 1.0f,   0.0f, 1.0f, 0.0f,   1.0, 0.0f,
+        0.0f,  0.5f, fubar, 1.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
     };
 
     constexpr auto fovRad = M_PI * 0.5;
     constexpr auto near = 0.1;
     constexpr auto far = 10.0;
     const Mat4d perspective = perspectiveMatrix(fovRad, near, far);
-
+    
+    
+    const Vec3d from{0.0, 0.0, 1.3};
+    const Vec3d to{0.0, 0.0, 0.0};
+    const Vec3d up{0.0, 1.0, 0.0};
+    
+    const Mat4d camera = cameraMatrix(from, to, up);
+    
     unsigned int texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -174,6 +182,10 @@ int main()
         shader.setFloat("pylly", greenValue);
 
         shader.setMat4f("perspective", perspective.cast<float>());
+
+        std::cout << camera << std::endl << std::endl;
+
+        shader.setMat4f("camera", camera.cast<float>());
 
         glDrawArrays(GL_TRIANGLES, 0, 3); // use this when not rendering from index buffer
         //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // use this when rendering from index buffer

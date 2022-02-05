@@ -8,6 +8,7 @@ out vec3 dynamicColor;
 out vec2 TexCoord;
 
 uniform mat4 perspective;
+uniform mat4 camera;
 
 void main()
 {

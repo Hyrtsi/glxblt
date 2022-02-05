@@ -20,3 +20,5 @@ using Mat3d = Eigen::Matrix3d;
 using Mat4d = Eigen::Matrix4d;
 
 Mat4d perspectiveMatrix(double fovRad, double near, double far);
+
+Mat4d cameraMatrix(Vec3d from, Vec3d to, Vec3d up);

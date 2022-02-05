@@ -132,22 +132,17 @@ public:
 
     void setMat4f(const std::string &name, const Mat4f& value) const
     {
-        // std::cout << value << std::endl;
-        // std::cout << std::endl;
         auto location = glGetUniformLocation(ID, name.c_str());
-        // std::cout << location << std::endl;
         const GLenum err = glGetError();
         if (GL_NO_ERROR != err)
         {
             printf("setMat4f failed\n");
             return;
         }
-
-        Mat4f a = Mat4f::Identity();
         
         glUniformMatrix4fv(
                 location,
-                static_cast<GLsizei>(1), GL_FALSE, value.data());
+                static_cast<GLsizei>(1), GL_TRUE, value.data());
 
     }
 
