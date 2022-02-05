@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <Eigen/Dense>
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -164,8 +165,6 @@ int main()
         
         float timeValue = glfwGetTime();
         float greenValue = 0.5f+0.5f*sin(timeValue*2.0f);
-        // int vertexColorLocation{shader.getUniformLocation("dynamicColor")};
-        // glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
         shader.setFloat("pylly", greenValue);
 
 
