@@ -15,6 +15,7 @@ Mat4d perspectiveMatrix(double fovRad, double near, double far)
     return p.transpose();
 }
 
+// todo const reference
 Mat4d cameraMatrix(Vec3d from, Vec3d to, Vec3d up)
 {
     Mat4d p;
@@ -31,4 +32,21 @@ Mat4d cameraMatrix(Vec3d from, Vec3d to, Vec3d up)
             Vec3d(0.0, 0.0, 0.0).transpose(), 1.0;
 
     return p.inverse();
+}
+
+Mat4d transformationMatrix(const Vec3d& pos, const Vec3d& eulerAngles)
+{
+    Mat4d p;
+
+    Eigen::AngleAxisd rollAngle(eulerAngles(0), Eigen::Vector3d::UnitZ());
+    Eigen::AngleAxisd yawAngle(eulerAngles(1), Eigen::Vector3d::UnitY());
+    Eigen::AngleAxisd pitchAngle(eulerAngles(2), Eigen::Vector3d::UnitX());
+
+    Eigen::Quaternion<double> q = rollAngle * yawAngle * pitchAngle;
+
+    Mat3d rot{q.matrix()};
+
+    p <<    rot, pos,
+            Vec3d(0.0, 0.0, 0.0).transpose(), 1.0;
+    return p;
 }

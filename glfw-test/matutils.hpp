@@ -22,3 +22,5 @@ using Mat4d = Eigen::Matrix4d;
 Mat4d perspectiveMatrix(double fovRad, double near, double far);
 
 Mat4d cameraMatrix(Vec3d from, Vec3d to, Vec3d up);
+
+Mat4d transformationMatrix(const Vec3d& pos, const Vec3d& eulerAngles = Vec3d(0.0, 0.0, 0.0));

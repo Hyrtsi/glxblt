@@ -9,10 +9,11 @@ out vec2 TexCoord;
 
 uniform mat4 perspective;
 uniform mat4 camera;
+uniform mat4 model;
 
 void main()
 {
-    gl_Position = perspective * camera * aPos;
+    gl_Position = perspective * camera * model * aPos;
     dynamicColor = aColor;
     TexCoord = aTexCoord;
 }

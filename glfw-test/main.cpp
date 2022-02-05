@@ -184,12 +184,15 @@ int main()
         // std::cout << camera << std::endl << std::endl;
 
 
-        const Vec3d from{sin(t), 1.0 + 0.5 * sin(t), cos(t)};
+        const Vec3d from{0.0, 1.0, 2.0};
         const Vec3d to{0.0, 0.0, 0.0};
         const Vec3d up{0.0, 1.0, 0.0};
         
         const Mat4d camera = cameraMatrix(from, to, up);
         shader.setMat4f("camera", camera.cast<float>());
+
+        const Mat4d model = transformationMatrix(Vec3d(0.0, 0.0, 0.0), Vec3d(0.0, 0.0, 0.0));
+        shader.setMat4f("model", model.cast<float>());
 
         glDrawArrays(GL_TRIANGLES, 0, 3); // use this when not rendering from index buffer
         //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // use this when rendering from index buffer
