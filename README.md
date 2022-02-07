@@ -22,3 +22,5 @@ Resources: https://learnopengl.com
 - Install dependencies
 - `cd glfw-test`
 - `cmake -S . -B build && make -j16 && ./build/app`
+
+![image](https://user-images.githubusercontent.com/17768288/152810635-1973b975-4150-4360-b9da-b4c31099f9d5.png)
