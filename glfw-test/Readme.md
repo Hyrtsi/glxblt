@@ -2,29 +2,36 @@
 
 ## Installation and usage
 
-- install dependencies
+### Dependencies:
+- glfw
+- cmake, g++ (or whatever you want to build it with)
+- openGL 3.3
+- Eigen
+
+###  Install `glfw`:
+  - `sudo apt install xorg-dev`
+  - `cd ext`
+  - `git clone git clone https://github.com/glfw/glfw.git`
+  - `cd glfw`
+  - `cmake -S . -B build && cmake --build build -j$(nproc)`
+  - Done. More info: https://www.glfw.org/docs/latest/compile.html
+
+### Install packages
+
+```
+sudo apt-get install cmake pkg-config g++ build-essentials make \
+    libglew-dev libglfw3-dev libglm-dev \
+    libglu1-mesa-dev freeglut3-dev mesa-common-dev \
+    libeigen3-dev
+```
+
+### Build and run
+
 - go to repository root 
-- `mkdir build`
-- `cd build`
-- `cmake ..`
-- `make`
-- `./app`
+- `./build.sh` (needs +x permissions)
+OR:
+- `cmake -S . -B build && cmake --build build -j$(nproc) && ./build/app`
 
-
-## Dependencies
-
-- glfw https://github.com/glfw/glfw
-- cmake
-- openGL 3.3 
-- libeigen3-dev
-- 
 Tested only on Ubuntu 20.04, so you may have to do some additional work on Windows or Mac
 
 Read the glfw manpages for installation guide and you'll be fine
-
-## TODO
-
-- make portable
-- use pre-built binaries ?
--- switching between os'es, different build types (release/debug) is shitty without the source code?
-- remove the glfw copypaste fork
