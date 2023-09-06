@@ -62,7 +62,9 @@ public:
         }
         catch (std::ifstream::failure& e)
         {
-            std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ: " << e.what() << std::endl;
+            std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ: " << e.what() <<
+                "Vertex:" << 
+                vertexPath << "Fragment:" << fragmentPath <<  std::endl;
             return;
         }
 
